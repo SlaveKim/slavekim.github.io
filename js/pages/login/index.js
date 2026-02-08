@@ -1,5 +1,5 @@
-import { loginGuard } from "/js/lib/auth/";
-import { setUser } from "/js/lib/ls/users";
+import { loginGuard } from "/js/lib/auth/index.js";
+import { setUser } from "/js/lib/ls/users/index.js";
 
 const form = document.getElementById("loginForm");
 const input = document.getElementById("username");
