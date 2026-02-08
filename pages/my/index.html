@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>MY | DAILY QUEST</title>
+
+  <!-- Bootstrap 4 (프로젝트 공통) -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <!-- App CSS (공통 재활용) -->
+  <link rel="stylesheet" href="/css/app.css" />
+  <link rel="stylesheet" href="/css/shell.css" />
+  <link rel="stylesheet" href="/css/topbar.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+  <link rel="stylesheet" href="/css/footbar.css" />
+  <link rel="stylesheet" href="/css/modal.css" />
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <template id="page-content">
+    <div class="card retro-card h-100">
+      <div class="card-body d-flex flex-column">
+
+        <div class="d-flex align-items-start justify-content-between">
+          <div>
+            <div class="retro-title">MY NOTE</div>
+            <div class="text-muted small">프로젝트 회고/메모. (localStorage 단일 문서)</div>
+          </div>
+          <div class="d-flex align-items-center">
+            <a href="/pages/todo/" class="btn btn-sm btn-outline-dark">← TO DO</a>
+          </div>
+        </div>
+
+        <hr class="opacity-25 my-3">
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="small text-muted" id="my-meta">LOCAL ONLY</div>
+          <div class="small text-muted" id="my-date">----</div>
+        </div>
+
+        <!-- scroll only inside this wrap -->
+        <div class="flex-grow-1" style="min-height:0; overflow:auto; padding-right:6px;">
+          <div class="paper p-3" style="border-radius: 12px;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="font-weight-bold" style="letter-spacing:.5px;">회고 / 후기</div>
+              <div class="small text-muted" id="last-saved">last saved: -</div>
+            </div>
+
+            <textarea
+              id="myText"
+              class="form-control"
+              rows="24"
+              maxlength="4000"
+              style="border-radius: 12px;"
+            ></textarea>
+
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div class="small text-muted">
+                <span id="count">0</span>/4000
+              </div>
+              <div>
+                <button class="btn btn-sm btn-outline-dark" id="btnResetDummy" type="button">더미로 되돌리기</button>
+                <button class="btn btn-sm btn-outline-dark" id="btnClear" type="button">비우기</button>
+                <button class="btn btn-sm btn-dark" id="btnSave" type="button">저장</button>
+              </div>
+            </div>
+
+            <div class="small text-muted mt-2">
+              * 이 페이지는 “나 혼자 보기” 용도라 리스트 저장이 아니라 1개 문서만 유지해. <br />
+              * 사실 지피티한테 작성시키고, 한번 읽어보고 코드오류가 보이면 수정하기!
+            </div>
+          </div>
+        </div>
+
+        <!-- Alert Modal -->
+        <div class="alert-modal" id="dqModal" aria-hidden="true">
+          <div class="alert-modal__backdrop"></div>
+          <div class="alert-modal__panel paper" role="dialog" aria-modal="true" aria-labelledby="dqModalTitle">
+            <div class="alert-modal__titlebar">
+              <span class="alert-modal__dot"></span>
+              <span class="alert-modal__caption" id="dqModalTitle">ALERT</span>
+            </div>
+            <div class="alert-modal__body">
+              <div class="alert-modal__desc" id="dqModalMessage">메시지</div>
+              <div class="alert-modal__actions">
+                <button type="button" class="btn btn-outline-dark btn-sm" id="dqModalOkBtn">확인</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </template>
+
+  <script type="module" src="/js/pages/my/index.js"></script>
+</body>
+</html>

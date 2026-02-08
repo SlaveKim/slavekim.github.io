@@ -1,0 +1,13 @@
+.dq-weather {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.6);
+}
+
+.dq-weather__icon {
+  transform: translateY(-1px);
+}

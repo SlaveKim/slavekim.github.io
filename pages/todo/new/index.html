@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>NEW QUEST | DAILY QUEST</title>
+
+  <!-- Bootstrap 4 (기존 유지) -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="/css/app.css" />
+  <link rel="stylesheet" href="/css/modal.css" />
+  <link rel="stylesheet" href="/css/todo.css" />
+  <link rel="stylesheet" href="/css/todo-new.css" />
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <template id="page-content">
+    <div class="card retro-card h-100 todo-page todo-new-page" data-ui="idle">
+      <div class="card-body d-flex flex-column">
+
+        <!-- Header -->
+        <div class="d-flex align-items-start justify-content-between">
+          <div>
+            <div class="retro-title">NEW QUEST</div>
+            <div class="text-muted small">퀘스트를 작성하고 확인하기를 눌러 분석</div>
+          </div>
+
+          <!-- 완료 상태에서는 우측 상단 링크도 사라짐 -->
+          <div class="d-flex align-items-center" data-role="top-actions">
+            <a href="/pages/todo/" class="btn btn-sm btn-outline-dark">← 돌아가기</a>
+          </div>
+        </div>
+
+        <hr class="opacity-25 my-3">
+
+        <!-- Meta row -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="small text-muted" id="new-meta">TODAY 0/5</div>
+          <div class="small text-muted" id="new-date">----</div>
+        </div>
+
+        <!-- Body (scroll only here) -->
+        <div class="todo-new-wrap flex-grow-1">
+          <form id="new-quest-form" class="dq-form">
+
+            <!-- INPUT -->
+            <div class="dq-form__row" data-role="input-panel">
+              <label class="dq-label" for="questText">퀘스트 내용</label>
+              <textarea
+                id="questText"
+                class="form-control dq-textarea"
+                rows="16"
+                placeholder="예) 30분 운동하기
+예) 논문 초록 1단락 수정하기
+* 확인하기를 누르면 요약/보상이 결정돼.
+** 지금은 내용이 그대로 등록되. API를 연결안했거든!! **
+
+
+* 사실 여기서는 openAI API로 작성내용과 이를 분석요구하는 프롬프트를 보내서, 요약 / 보상 등을 받아오려고 했는데 API서버를 따로 써야해서 목업만 만들었다는데 의의를 두려고 합니다 
+"
+
+                maxlength="2000"
+                required
+              ></textarea>
+              <div class="dq-help d-flex justify-content-between">
+                <span>Enter로 줄바꿈 가능</span>
+                <span><span id="textCount">0</span>/2000</span>
+              </div>
+            </div>
+
+            <!-- RESULT (초기에는 숨김, 완료 시 나타남) -->
+            <div class="dq-form__row dq-result" data-role="result-panel" style="display:none;">
+              <div class="dq-result__title">
+                ✅ 작성 완료됐어!
+              </div>
+
+              <div class="dq-result__body">
+                <div class="dq-result__block">
+                  <div class="dq-subtitle">요약</div>
+                  <div class="dq-preview dq-typed" id="resultSummary"></div>
+                </div>
+
+                <div class="dq-result__block">
+                  <div class="dq-subtitle">내용</div>
+                  <div class="dq-preview dq-typed" id="resultText"></div>
+                </div>
+
+                <div class="dq-result__block">
+                  <div class="dq-subtitle">보상</div>
+                  <div class="dq-reward" id="rewardPreview">
+                    <span class="badge retro-badge mr-1 stat-badge" data-stat="FOCUS">F +0</span>
+                    <span class="badge retro-badge mr-1 stat-badge" data-stat="HEALTH">H +0</span>
+                    <span class="badge retro-badge mr-1 stat-badge" data-stat="CRAFT">C +0</span>
+                    <span class="badge retro-badge mr-1 stat-badge" data-stat="ORDER">O +0</span>
+                    <span class="badge retro-badge mr-1 stat-badge" data-stat="SOCIAL">S +0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ACTIONS (상태별로 보이는 버튼이 달라짐) -->
+            <div class="dq-form__actions">
+
+              <!-- idle: 확인하기(빤짝) -->
+              <button type="button" id="btn-check" class="btn btn-dark dq-btn-glow" data-role="btn-check">
+                확인하기
+              </button>
+
+              <!-- done: 돌아가기만 -->
+              <a href="/pages/todo/" id="btn-back" class="btn btn-outline-dark" data-role="btn-back" style="display:none;">
+                돌아가기
+              </a>
+
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Loading overlay -->
+        <div class="dq-loading" id="dqLoading" aria-hidden="true">
+          <div class="dq-loading__panel paper">
+            <div class="dq-loading__title">ANALYZING...</div>
+
+            <div class="dq-loading__desc" id="loadingLine">인과율을 확인하는 중</div>
+
+            <div class="dq-loading__ticker" aria-hidden="true">
+              <div class="dq-loading__tickerInner" id="loadingTicker"></div>
+            </div>
+
+            <div class="dq-loading__bar" aria-hidden="true">
+              <div class="dq-loading__barFill"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alert Modal -->
+        <div class="alert-modal" id="dqModal" aria-hidden="true">
+          <div class="alert-modal__backdrop"></div>
+          <div class="alert-modal__panel paper" role="dialog" aria-modal="true" aria-labelledby="dqModalTitle">
+            <div class="alert-modal__titlebar">
+              <span class="alert-modal__dot"></span>
+              <span class="alert-modal__caption" id="dqModalTitle">ALERT</span>
+            </div>
+            <div class="alert-modal__body">
+              <div class="alert-modal__desc" id="dqModalMessage">메시지</div>
+              <div class="alert-modal__actions">
+                <button type="button" class="btn btn-outline-dark btn-sm" id="dqModalOkBtn">확인</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </template>
+
+  <script type="module" src="/js/pages/todo/new/index.js"></script>
+</body>
+</html>

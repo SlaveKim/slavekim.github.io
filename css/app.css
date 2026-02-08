@@ -1,0 +1,246 @@
+/* =========================================================
+   Daily Quest – App Core Styles
+   (tokens + shared components only)
+   ========================================================= */
+
+/* ===========================
+   FONT IMPORT (GLOBAL)
+   =========================== */
+@import url("https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css");
+@import url("https://cdn.jsdelivr.net/gh/neodgm/neodgm-pro-webfont@1.020/neodgm_pro/style.css");
+@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+
+/* =========================================================
+   Design Tokens
+   ========================================================= */
+
+:root {
+  /* paper / ink palette */
+  --bg: #f4f2ed;
+  --paper: #efe8dc;
+  --paper-2: #f7f2e8;
+  --ink: #2e2a26;
+  --muted: rgba(46, 42, 38, 0.62);
+  --line: rgba(46, 42, 38, 0.26);
+  --line-strong: rgba(46, 42, 38, 0.42);
+  --shadow: rgba(46, 42, 38, 0.14);
+
+  /* typography */
+  --font-kr:
+    "Galmuri9", "NeoDunggeunmo Pro", "NeoDunggeunmo", system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+
+  --font-en: "VT323", ui-monospace, Menlo, Consolas, monospace;
+}
+
+/* ===========================
+   GLOBAL RESET / BASE
+   =========================== */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper-bg);
+  color: var(--ink-main);
+  font-family: var(--font-kr);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+body {
+  font-family: var(--font-en);
+  font-family: var(--font-kr);
+  background: var(--bg);
+  color: var(--ink);
+  letter-spacing: 0.2px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 숫자 / 시간 / 코드 계열만 VT323 */
+#topbar-clock,
+.mono,
+.retro-mono,
+.time,
+.score {
+  font-family: var(--font-en);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.6px;
+}
+
+/* =========================================================
+   App Frame (콘솔 느낌 크기)
+   ========================================================= */
+
+.retro-shell {
+  width: 80vw;
+  min-width: 800px;
+  height: 80vh;
+  min-height: 600px;
+}
+
+/* =========================================================
+   Core Surfaces
+   ========================================================= */
+
+.retro-card,
+.paper {
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+
+.card.retro-card,
+.card.paper {
+  overflow: hidden;
+}
+
+/* =========================================================
+   Typography
+   ========================================================= */
+
+.retro-title {
+  font-weight: 900;
+  letter-spacing: 0.6px;
+}
+
+/* muted text */
+.text-muted,
+.small.text-muted {
+  color: var(--muted) !important;
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+
+.btn {
+  border-radius: 10px;
+  font-family: var(--font-kr);
+}
+
+.btn-outline-dark {
+  color: var(--ink);
+  border-color: var(--line-strong);
+  background: transparent;
+}
+
+.btn-outline-dark:hover {
+  background: rgba(46, 42, 38, 0.06);
+  border-color: var(--ink);
+}
+
+.btn-dark {
+  background: #222;
+  border-color: #222;
+}
+
+.btn-dark:hover {
+  background: #000;
+  border-color: #000;
+}
+
+/* =========================================================
+   Inputs
+   ========================================================= */
+
+.form-control {
+  border-radius: 10px;
+  border: 2px solid var(--line);
+  background: var(--paper-2);
+  color: var(--ink);
+  font-family: var(--font-kr);
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: var(--ink);
+  background: #fffdf7;
+}
+
+.form-control.is-invalid {
+  border-color: var(--ink);
+}
+
+/* =========================================================
+   Badges
+   ========================================================= */
+
+.retro-badge {
+  border: 1px solid rgba(46, 42, 38, 0.25);
+  background: rgba(46, 42, 38, 0.08);
+  color: var(--ink);
+  opacity: 0.95;
+  font-family: var(--font-en);
+  letter-spacing: 0.5px;
+}
+
+/* =========================================================
+   Lists
+   ========================================================= */
+
+.retro-list .list-group-item {
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.retro-list .list-group-item:hover {
+  background: rgba(46, 42, 38, 0.05);
+}
+
+.retro-list .list-group-item.active {
+  background: rgba(46, 42, 38, 0.1);
+  color: var(--ink);
+}
+
+/* =========================================================
+   Separators
+   ========================================================= */
+
+hr {
+  border-color: rgba(46, 42, 38, 0.2);
+}
+
+/* =========================================================
+   Bootstrap 5 utility compatibility (BS4 대응)
+   ========================================================= */
+
+.d-grid {
+  display: grid;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.fw-bold {
+  font-weight: 700 !important;
+}
+
+.opacity-25 {
+  opacity: 0.25 !important;
+}
+
+.text-bg-secondary {
+  background: #6c757d;
+  color: #fff;
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: 10px;
+  font-family: var(--font-en);
+}
+
+/* ===========================
+   NUMERIC / DIGITAL TEXT
+   =========================== */
+.font-digital {
+  font-family: var(--font-en);
+  letter-spacing: 1px;
+}

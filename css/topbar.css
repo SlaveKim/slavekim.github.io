@@ -1,0 +1,31 @@
+/* /css/topbar.css */
+
+/* topbar 카드에만 적용되는 미세 조정 */
+.topbar .card-body {
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+
+/* 시계 기본 */
+#topbar-clock {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+/* (나중에 JS에서 클래스만 붙이면 됨) */
+#topbar-clock.clock-warn {
+  color: rgba(165, 60, 60, 0.85) !important;
+  font-weight: 800;
+}
+
+#topbar-clock.clock-danger {
+  color: rgba(190, 40, 40, 0.95) !important;
+  font-weight: 900;
+  animation: dq-blink 0.9s steps(1, end) infinite;
+}
+
+@keyframes dq-blink {
+  50% {
+    opacity: 0.25;
+  }
+}

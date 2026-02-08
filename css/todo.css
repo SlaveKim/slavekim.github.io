@@ -1,0 +1,328 @@
+/* =========================
+   Layout height + flex scroll
+========================= */
+html, body { height: 100%; }
+#app { min-height: 100vh; }
+
+/* ✅ todo 페이지 컨텐츠가 100% 높이 안에서만 놀게 */
+.todo-page{
+  /* shell-content가 flex column이므로, 그 안에서 꽉 차게 */
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* ✅ page 자체가 커지지 않게 */
+}
+
+/* ✅ todo-page 안에서 카드/바디가 남은 높이를 먹도록 */
+.todo-page .card,
+.todo-page .card-body{
+  min-height: 0;
+}
+
+/* (만약 card를 flex로 쓰고 싶으면) */
+.todo-page .card{
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✅ card-body는 내부에서만 스크롤을 만들도록 overflow 차단 */
+.todo-page .card-body{
+  overflow: hidden;
+}
+
+/* ✅ 스크롤은 여기서만 */
+.todo-list-wrap{
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px; /* 스크롤바가 컨텐츠 덮는 느낌 완화 */
+}
+
+/* =========================
+   Retro Scrollbar (todo-list-wrap)
+   - 알파 + 조금 진한 잉크톤
+   - WebKit + Firefox 대응
+========================= */
+:root{
+  --scroll-track: rgba(46, 42, 38, 0.10);
+  --scroll-thumb: rgba(46, 42, 38, 0.34);
+  --scroll-thumb-hover: rgba(46, 42, 38, 0.46);
+  --scroll-border: rgba(46, 42, 38, 0.22);
+}
+
+.todo-list-wrap{
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+}
+
+.todo-list-wrap::-webkit-scrollbar{
+  width: 12px;
+}
+
+.todo-list-wrap::-webkit-scrollbar-track{
+  background: var(--scroll-track);
+  border-left: 2px solid var(--scroll-border);
+  border-radius: 10px;
+}
+
+.todo-list-wrap::-webkit-scrollbar-thumb{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.00)
+    ),
+    linear-gradient(
+      180deg,
+      var(--scroll-thumb),
+      rgba(46,42,38,0.26)
+    );
+  border: 2px solid rgba(239, 232, 220, 0.85); /* paper 느낌 */
+  border-radius: 10px;
+  box-shadow: 1px 1px 0 rgba(0,0,0,0.08);
+}
+
+.todo-list-wrap::-webkit-scrollbar-thumb:hover{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.22),
+      rgba(255,255,255,0.00)
+    ),
+    linear-gradient(
+      180deg,
+      var(--scroll-thumb-hover),
+      rgba(46,42,38,0.34)
+    );
+}
+
+/* =========================
+   Stat colors (retro palette)
+========================= */
+:root{
+  --stat-focus:  #575fcf;
+  --stat-health: #0be881;
+  --stat-craft:  #ffc048;
+  --stat-order:  #4bcffa;
+  --stat-social: #ef5777;
+
+  --stamp-red: rgba(186, 35, 35, 0.78);
+  --stamp-red-2: rgba(186, 35, 35, 0.32);
+
+  /* tooltip common */
+  --tip-text: #1a1a1a;
+  --tip-shadow: rgba(0,0,0,0.25);
+}
+
+.stat-badge{
+  font-size: 12px;
+  padding: 2px 7px;
+  border: 1px solid rgba(0,0,0,0.22);
+  color: rgba(0,0,0,0.9);
+  filter: saturate(0.95);
+
+  position: relative;
+  cursor: help;
+  z-index: 1;
+}
+
+/* hover 시 항상 최상단 */
+.stat-badge:hover{
+  z-index: 99999;
+}
+
+/* =========================
+   Stat badge + solid tooltip palette
+   (❗ 알파 제거: 불투명 배경)
+========================= */
+.stat-badge[data-stat="FOCUS"]{
+  background: var(--stat-focus);
+  --tip-bg: #e6e9ff;   /* focus tint (solid) */
+  --tip-br: #575fcf;
+}
+.stat-badge[data-stat="HEALTH"]{
+  background: var(--stat-health);
+  --tip-bg: #e7fff3;
+  --tip-br: #0be881;
+}
+.stat-badge[data-stat="CRAFT"]{
+  background: var(--stat-craft);
+  --tip-bg: #fff2cc;
+  --tip-br: #ffc048;
+}
+.stat-badge[data-stat="ORDER"]{
+  background: var(--stat-order);
+  --tip-bg: #e6f6ff;
+  --tip-br: #4bcffa;
+}
+.stat-badge[data-stat="SOCIAL"]{
+  background: var(--stat-social);
+  --tip-bg: #ffe3ea;
+  --tip-br: #ef5777;
+}
+
+.stat-badge[data-stat="FOCUS"],
+.stat-badge[data-stat="SOCIAL"]{
+  color: #ffffff;
+}
+
+/* =========================
+   Stat Tooltip (hover popup)
+   - solid background (alpha 제거)
+========================= */
+.stat-badge[data-tip]::after{
+  content: attr(data-tip);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translate(8px, -50%);
+  opacity: 0;
+
+  background: var(--tip-bg);
+  border: 1px solid var(--tip-br);
+  box-shadow: 2px 2px 0 var(--tip-shadow);
+  color: var(--tip-text);
+
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 6px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+
+  pointer-events: none;
+  z-index: 999999;
+
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.stat-badge[data-tip]::before{
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translate(2px, -50%);
+  opacity: 0;
+
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid var(--tip-br);
+
+  pointer-events: none;
+  z-index: 999998;
+
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.stat-badge:hover::after{
+  opacity: 1;
+  transform: translate(12px, -50%);
+}
+.stat-badge:hover::before{
+  opacity: 1;
+  transform: translate(6px, -50%);
+}
+
+/* =========================
+   Todo states + accordion
+========================= */
+.todo-item{ position: relative; }
+.todo-item.is-done{ opacity: 0.46; }
+
+.todo-detail{
+  border-top: 1px dashed rgba(0,0,0,0.18);
+  padding-top: 8px;
+  white-space: pre-wrap;
+}
+
+/* OPEN/CLOSE 배지 숨김 */
+[data-role="toggle-badge"]{ display: none !important; }
+
+/* =========================
+   Stamp (ink style)
+========================= */
+.todo-stamp{
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+
+  padding: 10px 12px;
+  text-align: center;
+
+  border: 3px solid var(--stamp-red);
+  border-radius: 10px;
+  color: var(--stamp-red);
+  background: #ffffff;
+
+  transform: rotate(-9deg);
+  box-shadow:
+    1px 1px 0 rgba(0,0,0,0.08),
+    0 0 0 2px rgba(255,255,255,0.28) inset;
+
+  filter: drop-shadow(1px 1px 0 var(--stamp-red-2))
+          drop-shadow(-1px 0 0 var(--stamp-red-2))
+          drop-shadow(0 2px 1px rgba(0,0,0,0.10));
+}
+
+.todo-stamp::before{
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 12px;
+  border: 2px dashed rgba(186,35,35,0.35);
+  transform: rotate(2deg);
+  filter: blur(0.25px);
+  pointer-events: none;
+}
+
+.todo-stamp::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 18% 25%, rgba(186,35,35,0.12), transparent 45%),
+    radial-gradient(circle at 74% 68%, rgba(186,35,35,0.10), transparent 48%),
+    radial-gradient(circle at 52% 40%, rgba(186,35,35,0.08), transparent 46%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.todo-stamp-title{
+  font-family: "VT323", monospace;
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+.todo-stamp-date,
+.todo-stamp-time{
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+/* =========================
+   Confirm modal
+========================= */
+.dq-modal-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.dq-modal{
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  border: 2px solid rgba(0,0,0,0.65);
+  background: #f6f1e7;
+  padding: 16px;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.20);
+}

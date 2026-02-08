@@ -1,0 +1,82 @@
+/* /css/modal.css */
+
+.alert-modal{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.alert-modal.is-open{
+  display: flex;
+}
+
+.alert-modal__backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+
+.alert-modal__panel{
+  position: relative;
+  width: 360px;
+  max-width: calc(100vw - 48px);
+
+  border-color: rgba(46,42,38,0.38);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25), 4px 6px 0 rgba(46,42,38,0.18);
+  overflow: hidden;
+
+  transform: translateY(8px) scale(0.98);
+  opacity: 0;
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.alert-modal.is-open .alert-modal__panel{
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.alert-modal__titlebar{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(46,42,38,0.18);
+  background: rgba(46,42,38,0.04);
+}
+
+.alert-modal__dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(46,42,38,0.55);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35);
+}
+
+.alert-modal__caption{
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: var(--ink);
+  opacity: .92;
+}
+
+.alert-modal__body{
+  padding: 14px 14px 12px;
+}
+
+.alert-modal__desc{
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.alert-modal__actions{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}

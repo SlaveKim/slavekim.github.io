@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>DAILY QUEST</title>
+
+  <!-- Bootstrap (기존 유지) -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="/css/app.css" />
+  <link rel="stylesheet" href="/css/todo.css" />
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <template id="page-content">
+    <div class="card retro-card h-100 todo-page">
+      <div class="card-body d-flex flex-column">
+
+        <!-- Header -->
+        <div class="d-flex align-items-center justify-content-between">
+          <div>
+            <div class="retro-title">!! QUEST !!</div>
+            <div class="text-muted small">오늘도 열심히 퀘스트를 깨보자!</div>
+          </div>
+          <button id="btn-new-quest" class="btn btn-sm btn-outline-dark">
+            + 새 퀘스트
+          </button>
+        </div>
+
+        <hr class="opacity-25 my-3">
+
+        <!-- Meta -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="small text-muted" id="todo-meta">TODAY 0/5</div>
+          <div class="small text-muted" id="todo-date">----</div>
+        </div>
+
+        <!-- List (5칸 고정 / 내부 스크롤) -->
+        <div id="todo-list" class="todo-list-wrap flex-grow-1 ">
+
+          <!-- SLOT 0 -->
+          <div class="card retro-card todo-item mb-2" id="todo-slot-0" data-state="empty">
+            <div class="card-body py-2">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="todo-summary fw-bold" data-role="summary">EMPTY SLOT</div>
+
+                <div class="d-flex align-items-center">
+                  <span class="badge retro-badge mr-2 toggle-badge" data-role="toggle-badge">----</span>
+                  <button class="btn btn-sm btn-outline-dark todo-btn"
+                    data-action="complete" data-idx="0" disabled>완료</button>
+                </div>
+              </div>
+
+              <div class="mt-2 todo-detail-wrap">
+                <button class="btn btn-sm btn-outline-dark todo-btn"
+                  data-action="toggle-detail" data-idx="0" style="display:none;">+ 열기</button>
+
+                <div class="todo-detail mt-2" data-role="detail" style="display:none;">
+                  <div class="small text-muted" data-role="text"></div>
+                </div>
+              </div>
+
+              <div class="todo-reward mt-2" data-role="reward">
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="FOCUS">F +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="HEALTH">H +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="CRAFT">C +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="ORDER">O +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="SOCIAL">S +0</span>
+              </div>
+
+              <div class="todo-stamp" data-role="stamp" style="display:none;">
+                <div class="todo-stamp-title" data-role="stamp-title"></div>
+                <div class="todo-stamp-date" data-role="stamp-date"></div>
+                <div class="todo-stamp-time" data-role="stamp-time"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLOT 1 -->
+          <div class="card retro-card todo-item mb-2" id="todo-slot-1" data-state="empty">
+            <div class="card-body py-2">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="todo-summary fw-bold" data-role="summary">EMPTY SLOT</div>
+
+                <div class="d-flex align-items-center">
+                  <span class="badge retro-badge mr-2 toggle-badge" data-role="toggle-badge">----</span>
+                  <button class="btn btn-sm btn-outline-dark todo-btn"
+                    data-action="complete" data-idx="1" disabled>완료</button>
+                </div>
+              </div>
+
+              <div class="mt-2 todo-detail-wrap">
+                <button class="btn btn-sm btn-outline-dark todo-btn"
+                  data-action="toggle-detail" data-idx="1" style="display:none;">+ 열기</button>
+
+                <div class="todo-detail mt-2" data-role="detail" style="display:none;">
+                  <div class="small text-muted" data-role="text"></div>
+                </div>
+              </div>
+
+              <div class="todo-reward mt-2" data-role="reward">
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="FOCUS">F +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="HEALTH">H +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="CRAFT">C +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="ORDER">O +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="SOCIAL">S +0</span>
+              </div>
+
+              <div class="todo-stamp" data-role="stamp" style="display:none;">
+                <div class="todo-stamp-title" data-role="stamp-title"></div>
+                <div class="todo-stamp-date" data-role="stamp-date"></div>
+                <div class="todo-stamp-time" data-role="stamp-time"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLOT 2 -->
+          <div class="card retro-card todo-item mb-2" id="todo-slot-2" data-state="empty">
+            <div class="card-body py-2">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="todo-summary fw-bold" data-role="summary">EMPTY SLOT</div>
+
+                <div class="d-flex align-items-center">
+                  <span class="badge retro-badge mr-2 toggle-badge" data-role="toggle-badge">----</span>
+                  <button class="btn btn-sm btn-outline-dark todo-btn"
+                    data-action="complete" data-idx="2" disabled>완료</button>
+                </div>
+              </div>
+
+              <div class="mt-2 todo-detail-wrap">
+                <button class="btn btn-sm btn-outline-dark todo-btn"
+                  data-action="toggle-detail" data-idx="2" style="display:none;">+ 열기</button>
+
+                <div class="todo-detail mt-2" data-role="detail" style="display:none;">
+                  <div class="small text-muted" data-role="text"></div>
+                </div>
+              </div>
+
+              <div class="todo-reward mt-2" data-role="reward">
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="FOCUS">F +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="HEALTH">H +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="CRAFT">C +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="ORDER">O +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="SOCIAL">S +0</span>
+              </div>
+
+              <div class="todo-stamp" data-role="stamp" style="display:none;">
+                <div class="todo-stamp-title" data-role="stamp-title"></div>
+                <div class="todo-stamp-date" data-role="stamp-date"></div>
+                <div class="todo-stamp-time" data-role="stamp-time"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLOT 3 -->
+          <div class="card retro-card todo-item mb-2" id="todo-slot-3" data-state="empty">
+            <div class="card-body py-2">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="todo-summary fw-bold" data-role="summary">EMPTY SLOT</div>
+
+                <div class="d-flex align-items-center">
+                  <span class="badge retro-badge mr-2 toggle-badge" data-role="toggle-badge">----</span>
+                  <button class="btn btn-sm btn-outline-dark todo-btn"
+                    data-action="complete" data-idx="3" disabled>완료</button>
+                </div>
+              </div>
+
+              <div class="mt-2 todo-detail-wrap">
+                <button class="btn btn-sm btn-outline-dark todo-btn"
+                  data-action="toggle-detail" data-idx="3" style="display:none;">+ 열기</button>
+
+                <div class="todo-detail mt-2" data-role="detail" style="display:none;">
+                  <div class="small text-muted" data-role="text"></div>
+                </div>
+              </div>
+
+              <div class="todo-reward mt-2" data-role="reward">
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="FOCUS">F +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="HEALTH">H +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="CRAFT">C +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="ORDER">O +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="SOCIAL">S +0</span>
+              </div>
+
+              <div class="todo-stamp" data-role="stamp" style="display:none;">
+                <div class="todo-stamp-title" data-role="stamp-title"></div>
+                <div class="todo-stamp-date" data-role="stamp-date"></div>
+                <div class="todo-stamp-time" data-role="stamp-time"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLOT 4 -->
+          <div class="card retro-card todo-item mb-2" id="todo-slot-4" data-state="empty">
+            <div class="card-body py-2">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="todo-summary fw-bold" data-role="summary">EMPTY SLOT</div>
+
+                <div class="d-flex align-items-center">
+                  <span class="badge retro-badge mr-2 toggle-badge" data-role="toggle-badge">----</span>
+                  <button class="btn btn-sm btn-outline-dark todo-btn"
+                    data-action="complete" data-idx="4" disabled>완료</button>
+                </div>
+              </div>
+
+              <div class="mt-2 todo-detail-wrap">
+                <button class="btn btn-sm btn-outline-dark todo-btn"
+                  data-action="toggle-detail" data-idx="4" style="display:none;">+ 열기</button>
+
+                <div class="todo-detail mt-2" data-role="detail" style="display:none;">
+                  <div class="small text-muted" data-role="text"></div>
+                </div>
+              </div>
+
+              <div class="todo-reward mt-2" data-role="reward">
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="FOCUS">F +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="HEALTH">H +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="CRAFT">C +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="ORDER">O +0</span>
+                <span class="badge retro-badge mr-1 stat-badge" data-stat="SOCIAL">S +0</span>
+              </div>
+
+              <div class="todo-stamp" data-role="stamp" style="display:none;">
+                <div class="todo-stamp-title" data-role="stamp-title"></div>
+                <div class="todo-stamp-date" data-role="stamp-date"></div>
+                <div class="todo-stamp-time" data-role="stamp-time"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Confirm Modal -->
+        <div class="dq-modal-backdrop" id="dq-confirm" style="display:none;">
+          <div class="dq-modal" role="dialog" aria-modal="true">
+            <div class="dq-modal-title">퀘스트 완료?</div>
+            <div class="dq-modal-desc">
+              <span id="dq-confirm-summary"></span><br />
+              <span class="text-muted small">완료 처리하면 도장이 찍혀!</span>
+            </div>
+            <div class="dq-modal-actions">
+              <button class="btn btn-sm btn-outline-dark" data-action="confirm-cancel">취소</button>
+              <button class="btn btn-sm btn-dark" data-action="confirm-ok">완료!</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </template>
+
+  <script type="module" src="/js/pages/todo/"></script>
+</body>
+</html>
