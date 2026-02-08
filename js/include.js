@@ -1,5 +1,5 @@
-import { applyBg } from "/js/lib/random-bg";
-import { authGuard } from "/js/lib/auth";
+import { applyBg } from "/js/lib/random-bg/index.js";
+import { authGuard } from "/js/lib/auth/index.js";
 import { startClock, startGeoWeather } from "/js/common.js";
 
 /**
